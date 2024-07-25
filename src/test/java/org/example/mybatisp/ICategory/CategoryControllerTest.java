@@ -77,7 +77,7 @@ public class CategoryControllerTest {
         assertThat(resultObject).isNotNull();
         assertThat(resultObject.getName()).isEqualTo("NoRest");
 
-/*        // Category delete Test
+        // Category delete Test
         ICategory delete = CategoryDto.builder().id(update.getId()).build();
         this.testRestTempate.delete(url + "/ct/" +delete.getId());
 
@@ -86,7 +86,8 @@ public class CategoryControllerTest {
                 , CategoryDto.class
         );
         assertThat(deleteEntity).isNotNull();
-        assertThat(deleteEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);*/
+        assertThat(deleteEntity.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+
     }
 
 }

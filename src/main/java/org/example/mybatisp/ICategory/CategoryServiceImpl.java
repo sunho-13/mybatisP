@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryServiceImpl implements ICategoryService {
+public class CategoryServiceImpl implements ICategoryService<ICategory> {
     @Autowired
     private CategoryMybatisMapper categoryMybatisMapper;
 
@@ -42,9 +42,9 @@ public class CategoryServiceImpl implements ICategoryService {
         if ( list == null || list.size() <= 0 ) {
             return new ArrayList<>();
         }
-        // input : [CategoryEntity|CategoryEntity|CategoryEntity|CategoryEntity|CategoryEntity]
+        // input : [CategoryDto|CategoryDto|CategoryDto|CategoryDto|CategoryDto]
 //        List<ICategory> result = new ArrayList<>();
-//        for( CategoryEntity entity : list ) {
+//        for( CategoryDto entity : list ) {
 //            result.add( (ICategory)entity );
 //        }
         List<ICategory> result = list.stream()
@@ -76,7 +76,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public boolean remove(Long id) throws Exception {
+    public Boolean delete(Long id) throws Exception {
         ICategory find = this.findById(id);
         if ( find == null ) {
             return false;

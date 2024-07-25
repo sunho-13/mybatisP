@@ -53,7 +53,7 @@ public class CategoryController {
             if ( id == null ) {
                 return ResponseEntity.badRequest().build();
             }
-            Boolean result = this.categoryService.remove(id);
+            Boolean result = this.categoryService.delete(id);
             return ResponseEntity.ok(result);
         } catch ( Exception ex ) {
             logger.error(ex.toString());
