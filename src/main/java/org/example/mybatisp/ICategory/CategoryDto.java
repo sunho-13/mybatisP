@@ -1,10 +1,11 @@
 package org.example.mybatisp.ICategory;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDto implements ICategory {

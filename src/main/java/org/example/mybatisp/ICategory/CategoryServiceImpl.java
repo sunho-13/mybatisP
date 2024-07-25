@@ -17,8 +17,8 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
         if ( id == null || id <= 0 ) {
             return null;
         }
-        CategoryDto dto= this.categoryMybatisMapper.findById(id);
-        return dto;
+        CategoryDto find = this.categoryMybatisMapper.findById(id);
+        return find;
     }
 
     @Override
@@ -92,18 +92,20 @@ public class CategoryServiceImpl implements ICategoryService<ICategory> {
             return null;
         }
         find.copyFields(category);
-        this.categoryMybatisMapper.update((CategoryDto) find);
+        this.categoryMybatisMapper.update((CategoryDto)find);
         return find;
     }
 
     @Override
-    public List<ICategory> findAllByNameContains(String name) {
-        if ( name == null || name.isEmpty() ) {
+    public List<ICategory> findAllByNameContains(SearchCategoryDto dto) {
+        if ( dto == null ) {
             //return List.of();
             return new ArrayList<>();
         }
+        dto.setOrderByWord("id DESC");
+        dto.setRowsOnePage(10);
         List<ICategory> list = this.getICategoryList(
-                this.categoryMybatisMapper.findAllByNameContains(name)
+                this.categoryMybatisMapper.findAllByNameContains(dto)
         );
         return list;
     }
