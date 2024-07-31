@@ -29,15 +29,34 @@ public class CategoryWebController {
 //            List<ICategory> allList = this.categoryService.getAllList();
             SearchCategoryDto searchCategoryDto = SearchCategoryDto.builder()
                     .name(name).page(page).build();
+            int total = this.categoryService.countAllByNameContains(searchCategoryDto);
+            searchCategoryDto.setTotal(total);
             List<ICategory> allList = this.categoryService.findAllByNameContains(searchCategoryDto);
             model.addAttribute("allList", allList);
             model.addAttribute("searchCategoryDto", searchCategoryDto);
+            // java 에서 html 문자를 만드는 고전적인 방법은 매우 안 좋다.
+            String sPages = this.getHtmlPageString(searchCategoryDto);
+            model.addAttribute("pageHtml", sPages);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "오류가 발생했습니다. 관리자에게 문의하세요.");
             return "error/error_save";  // resources/templates 폴더안의 화면파일
         }
         return "oldhtml/category_old";  // resources/templates 폴더안의 화면파일
+    }
+
+    private String getHtmlPageString(SearchCategoryDto searchCategoryDto) {
+        StringBuilder sResult = new StringBuilder();
+        int tPage = (searchCategoryDto.getTotal() + 9) / 10;
+        sResult.append("<div>");
+        for ( int i = 0; i < tPage; i++ ) {
+            sResult.append(" <a href='category_old?page=" + (i+1) +
+                    "&name=" + searchCategoryDto.getName() + "'>");
+            sResult.append(i+1);
+            sResult.append("</a> ");
+        }
+        sResult.append("</div>");
+        return sResult.toString();
     }
 
     @PostMapping("/oldhtml/category_old_act")
@@ -68,7 +87,7 @@ public class CategoryWebController {
                 model.addAttribute("error_message", id + " 데이터가 없습니다.");
                 return "error/error_find";
             }
-            model.addAttribute("CategoryDto", find);
+            model.addAttribute("categoryDto", find);
         } catch (Exception ex) {
             log.error(ex.toString());
             model.addAttribute("error_message", "서버 에러입니다. 관리자에게 문의 하세요.");
